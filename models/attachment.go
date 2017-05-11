@@ -164,11 +164,7 @@ func getAttachmentByReleaseIDFileName(e Engine, releaseID int64, fileName string
 	if err != nil {
 		return nil, err
 	} else if !has {
-<<<<<<< HEAD
 		return nil, nil
-=======
-		return nil, ErrAttachmentNotExist{0, attach.UUID}
->>>>>>> remotes/origin/git-style-release-url-attachments
 	}
 	return attach, nil
 }
