@@ -65,7 +65,7 @@ func (a *Attachment) FileSize() (string, error) {
 	if err != nil {
 		return "error", fmt.Errorf("AttachmentFileSize: %v", err)
 	}
-	return util.FormatFileSizeToMB(stats.Size()), nil
+	return util.FormatFileSize(stats.Size()), nil
 }
 
 // AttachmentLocalPath returns where attachment is stored in local file
@@ -114,7 +114,7 @@ func getAttachmentByUUID(e Engine, uuid string) (*Attachment, error) {
 	attach := &Attachment{UUID: uuid}
 	has, err := e.Get(attach)
 	if err != nil {
-		return nil, nil
+		return nil, err
 	} else if !has {
 		return nil, ErrAttachmentNotExist{0, uuid}
 	}
@@ -164,7 +164,7 @@ func getAttachmentByReleaseIDFileName(e Engine, releaseID int64, fileName string
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, nil
+		return nil, err
 	}
 	return attach, nil
 }

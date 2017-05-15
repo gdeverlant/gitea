@@ -404,6 +404,9 @@ func RegisterRoutes(m *macaron.Macaron) {
 			Post(bindIgnErr(auth.CreateRepoForm{}), repo.ForkPost)
 	}, reqSignIn)
 
+	// ***** Release Attachment Download without Signin
+	m.Get("/:username/:reponame/releases/download/:vTag/:fileName", ignSignIn, context.RepoAssignment(), repo.MustBeNotBare, repo.RedirectDownload)
+
 	m.Group("/:username/:reponame", func() {
 		m.Group("/settings", func() {
 			m.Combo("").Get(repo.Settings).
@@ -487,7 +490,6 @@ func RegisterRoutes(m *macaron.Macaron) {
 			m.Post("/delete", repo.DeleteMilestone)
 		}, reqRepoWriter, context.RepoRef())
 		m.Group("/releases", func() {
-			m.Get("/download/:vTag/:fileName", repo.RedirectDownload)
 			m.Get("/new", repo.NewRelease)
 			m.Post("/new", bindIgnErr(auth.NewReleaseForm{}), repo.NewReleasePost)
 			m.Post("/delete", repo.DeleteRelease)
